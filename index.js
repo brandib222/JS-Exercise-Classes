@@ -8,6 +8,8 @@
         + If a plane lands, its `isFlying` property gets set to false.
 */
 
+const { tsUnknownKeyword } = require("@babel/types");
+
 // EXAMPLE SOLUTION CODE:
 class Airplane {
   constructor(name) {
@@ -30,28 +32,44 @@ class Airplane {
 
 /*
   TASK 1
-    - Write a Person class whose constructor initializes `name` and `age` from arguments.
-    - All instances of Person should also initialize with an empty `stomach` array.
-    - Give instances of Person the ability to `.eat("someFood")`:
-        + When eating an edible, it should be pushed into the `stomach`.
-        + The `eat` method should have no effect if there are 10 items in the `stomach`.
-    - Give instances of Person the ability to `.poop()`:
-        + When an instance poops, its `stomach` should empty.
-    - Give instances of Person a method `.toString()`:
-        + It should return a string with `name` and `age`. Example: "Mary, 50"
+    - Write a Person class whose constructor initializes `name` and `age` from arguments.*
+    - All instances of Person should also initialize with an empty `stomach` array. *
+    - Give instances of Person the ability to `.eat("someFood")`:*
+        + When eating an edible, it should be pushed into the `stomach`.*
+        + The `eat` method should have no effect if there are 10 items in the `stomach`.*
+    - Give instances of Person the ability to `.poop()`:*
+        + When an instance poops, its `stomach` should empty.*
+    - Give instances of Person a method `.toString()`:*
+        + It should return a string with `name` and `age`. Example: "Mary, 50"*
 */
 
 class Person {
-  
+    constructor(name, age){
+        this.name = name;
+        this.age = age;
+        this.stomach = [];
+    }
+    eat(someFood){
+      if(this.stomach.length < 10)
+      this.stomach.push(someFood);
+    }
+    poop(){
+      this.stomach = [];
+    }
+    toString(){
+      return `${this.name}, ${this.age}`;
+    }
 }
+const BrandiDanielle = new Person('BrandiDanielle', 29);
 
+console.log('task 1:', BrandiDanielle.toString());
 /*
   TASK 2
-    - Write a Car class whose constructor initializes `model` and `milesPerGallon` from arguments.
-    - All instances built with Car:
-        + should initialize with a `tank` at 0
-        + should initialize with an `odometer` at 0
-    - Give cars the ability to get fueled with a `.fill(gallons)` method. Add the gallons to `tank`.
+    - Write a Car class whose constructor initializes `model` and `milesPerGallon` from arguments.*
+    - All instances built with Car:*
+        + should initialize with a `tank` at 0*
+        + should initialize with an `odometer` at 0*
+    - Give cars the ability to get fueled with a `.fill(gallons)` method. Add the gallons to `tank`.*
     - Give cars ability to `.drive(distance)`. The distance driven:
         + Should cause the `odometer` to go up.
         + Should cause the the `tank` to go down taking `milesPerGallon` into account.
@@ -60,76 +78,152 @@ class Person {
 */
 
 class Car {
-  
+    constructor(model, milesPerGallon){
+        this.model = model;
+        this.milesPerGallon = milesPerGallon;
+        this.tank = 0;
+        this.odometer = 0;
+    }
+    fill(gallons){
+      this.tank = this.tank + gallons; 
+    }
+    drive(distance){
+      const driveMiles = this.tank * this.milesPerGallon;
+      if(distance <= driveMiles){
+        this.odometer = this.odometer + distance;
+        this.tank = this.tank - (distance / this.milesPerGallon);
+      } else {
+        this.odometer = this.odometer + driveMiles;
+        this.tank = 0;
+        return `I ran out of fuel at ${this.odometer} miles`;
+      }
+    }
 }
 
 /*
   TASK 3
-    - Write a Lambdasian class.
-    - Its constructor takes a single argument - an object with the following keys:
-        + name
-        + age
-        + location
-    - Its constructor should initialize `name`, `age` and `location` properties on the instance.
-    - Instances of Lambdasian should be able to `.speak()`:
-        + Speaking should return a phrase `Hello my name is {name}, I am from {location}`.
-        + {name} and {location} of course come from the instance's own properties.
+    - Write a Lambdasian class.*
+    - Its constructor takes a single argument - an object with the following keys:*
+        + name*
+        + age*
+        + location*
+    - Its constructor should initialize `name`, `age` and `location` properties on the instance.*
+    - Instances of Lambdasian should be able to `.speak()`:*
+        + Speaking should return a phrase `Hello my name is {name}, I am from {location}`.*
+        + {name} and {location} of course come from the instance's own properties.*
 */
 class Lambdasian {
-  
+    constructor(attrs){
+        this.name = attrs.name;
+        this.age = attrs.age;
+        this.location = attrs.location;
+    }
+    speak(){
+        return `Hello my name is ${this.name}, I am from ${this.location}`;
+    }
 }
+const Bee = new Lambdasian({
+  name: 'Brandi',
+  age: 29,
+  location:'Indiana'
+});
 
+console.log('task 3:', Bee.speak());
 /*
   TASK 4
-    - Write an Instructor class extending Lambdasian.
+    - Write an Instructor class extending Lambdasian.*
     - Its constructor takes a single argument - an object with the following keys:
-        + All the keys used to initialize instances of Lambdasian.
-        + `specialty`: what the instance of Instructor is good at, i.e. 'redux'
-        + `favLanguage`: i.e. 'JavaScript, Python, Elm etc.'
-        + `catchPhrase`: i.e. `Don't forget the homies`.
-    - The constructor calls the parent constructor passing it what it needs.
-    - The constructor should also initialize `specialty`, `favLanguage` and `catchPhrase` properties on the instance.
+        + All the keys used to initialize instances of Lambdasian.*
+        + `specialty`: what the instance of Instructor is good at, i.e. 'redux'*
+        + `favLanguage`: i.e. 'JavaScript, Python, Elm etc.'*
+        + `catchPhrase`: i.e. `Don't forget the homies`.*
+    - The constructor calls the parent constructor passing it what it needs.*
+    - The constructor should also initialize `specialty`, `favLanguage` and `catchPhrase` properties on the instance.*
     - Instructor instances have the following methods:
         + `demo` receives a `subject` string as an argument and returns the phrase 'Today we are learning about {subject}' where subject is the param passed in.
-        + `grade` receives a `student` object and a `subject` string as arguments and returns '{student.name} receives a perfect score on {subject}'
+        + `grade` receives a `student` object and a `subject` string as arguments and returns '{student.name} receives a perfect score on {subject}'*
 */
-class Instructor {
-
+class Instructor extends Lambdasian{
+    constructor(attrs){
+      super(attrs);
+      this.specialty = attrs.specialty,
+      this.favLanguage = attrs.favLanguage,
+      this.catchPhrase = attrs.catchPhrase
+    }
+    demo(subject){
+      return `Today we are learning about ${subject}`;
+    }
+    grade(student, subject){
+      return `${student} receives a perfect score on ${subject}`;
+    }
 }
+const Brit = new Instructor({
+  name: 'Brit',
+  age: 25,
+  location: 'Canada',
+  specialty: 'teaching',
+  favLanguage: 'Javascript',
+  catchPhrase: 'dont worry about the grammar'
+});
+console.log('task 4:', Brit.grade('Jennifer', 'css'));
 /*
   TASK 5
-    - Write a Student class extending Lambdasian.
-    - Its constructor takes a single argument -  an object with the following keys:
-        + All the keys used to initialize instances of Lambdasian.
-        + `previousBackground` i.e. what the Student used to do before Lambda School
-        + `className` i.e. CS132
-        + `favSubjects`. i.e. an array of the student's favorite subjects ['HTML', 'CSS', 'JS']
-    - The constructor calls the parent constructor passing to it what it needs.
-    - The constructor should also initialize `previousBackground`, `className` and `favSubjects` properties on the instance.
+    - Write a Student class extending Lambdasian.*
+    - Its constructor takes a single argument -  an object with the following keys:*
+        + All the keys used to initialize instances of Lambdasian.*
+        + `previousBackground` i.e. what the Student used to do before Lambda School*
+        + `className` i.e. CS132*
+        + `favSubjects`. i.e. an array of the student's favorite subjects ['HTML', 'CSS', 'JS']*
+    - The constructor calls the parent constructor passing to it what it needs.*
+    - The constructor should also initialize `previousBackground`, `className` and `favSubjects` properties on the instance.*
     - Student instances have the following methods:
-        + `listSubjects` a method that returns all of the student's favSubjects in a single string: `Loving HTML, CSS, JS!`.
-        + `PRAssignment` a method that receives a subject as an argument and returns `student.name has submitted a PR for {subject}`
-        + `sprintChallenge` similar to PRAssignment but returns `student.name has begun sprint challenge on {subject}`
+        + `listSubjects` a method that returns all of the student's favSubjects in a single string: `Loving HTML, CSS, JS!`.*
+        + `PRAssignment` a method that receives a subject as an argument and returns `student.name has submitted a PR for {subject}`*
+        + `sprintChallenge` similar to PRAssignment but returns `student.name has begun sprint challenge on {subject}`*
 */
-class Student {
-   
+class Student extends Lambdasian{
+  constructor(attrs){
+    super(attrs);
+    this.previousBackground = attrs.previousBackground,
+    this.className = attrs.className,
+    this.favSubjects = attrs.favSubjects
+  }
+  listSubjects(){
+    return `Loving ${this.favSubjects}!`;
+  }
+  PRAssignment(subject){
+    return `${this.name} has submitted a PR for ${subject}`;
+  }
+  sprintChallenge(subject){
+    return `${this.name} has begun sprint challenge on ${subject}`;
+  }
 }
 
 /*
   TASK 6
-    - Write a ProjectManager class extending Instructor.
-    - Its constructor takes a single argument - an object with the following keys:
-        + All the keys used to initialize instances of Instructor.
-        + `gradClassName`: i.e. CS1
-        + `favInstructor`: i.e. Sean
-    - Its constructor calls the parent constructor passing to it what it needs.
-    - The constructor should also initialize `gradClassName` and `favInstructor` properties on the instance.
+    - Write a ProjectManager class extending Instructor.*
+    - Its constructor takes a single argument - an object with the following keys:*
+        + All the keys used to initialize instances of Instructor.*
+        + `gradClassName`: i.e. CS1*
+        + `favInstructor`: i.e. Sean*
+    - Its constructor calls the parent constructor passing to it what it needs.*
+    - The constructor should also initialize `gradClassName` and `favInstructor` properties on the instance.*
     - ProjectManager instances have the following methods:
-        + `standUp` a method that takes in a slack channel and returns `{name} announces to {channel}, @channel standy times!`
-        + `debugsCode` a method that takes in a student object and a subject and returns `{name} debugs {student.name}'s code on {subject}`
+        + `standUp` a method that takes in a slack channel and returns `{name} announces to {channel}, @channel standy times!`*
+        + `debugsCode` a method that takes in a student object and a subject and returns `{name} debugs {student.name}'s code on {subject}`*
 */
-class ProjectManager {
-   
+class ProjectManager extends Instructor{
+   constructor(attrs){
+    super(attrs);
+    this.gradClassName = attrs.gradClassName;
+    this.favInstructor = attrs.favInstructor;
+   }
+   standUp(slackChannel){
+     `${this.name} announces to ${slackChannel}, @channel standy times!`
+   }
+   debugCode(student, subject){
+     returns `${this.name} debugs ${student}'s code on ${subject}`;
+   }
 }
 /*
   STRETCH PROBLEM (no tests!)
