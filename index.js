@@ -153,8 +153,8 @@ class Instructor extends Lambdasian{
     demo(subject){
       return `Today we are learning about ${subject}`;
     }
-    grade(student, subject){
-      return `${student} receives a perfect score on ${subject}`;
+    grade(Student, subject){
+      return `${Student.name} receives a perfect score on ${subject}`;
     }
 }
 const Brit = new Instructor({
@@ -209,7 +209,7 @@ class Student extends Lambdasian{
     - Its constructor calls the parent constructor passing to it what it needs.*
     - The constructor should also initialize `gradClassName` and `favInstructor` properties on the instance.*
     - ProjectManager instances have the following methods:
-        + `standUp` a method that takes in a slack channel and returns `{name} announces to {channel}, @channel standy times!`*
+        + `standUp` a method that takes in a slack channel and returns `{name} announces to {channel}, @channel standup times!`*
         + `debugsCode` a method that takes in a student object and a subject and returns `{name} debugs {student.name}'s code on {subject}`*
 */
 class ProjectManager extends Instructor{
@@ -219,12 +219,25 @@ class ProjectManager extends Instructor{
     this.favInstructor = attrs.favInstructor;
    }
    standUp(slackChannel){
-     `${this.name} announces to ${slackChannel}, @channel standy times!`
+     return `${this.name} announces to ${slackChannel}, @channel standup times!`
    }
-   debugCode(student, subject){
-     returns `${this.name} debugs ${student}'s code on ${subject}`;
+   debugsCode(Student, subject){
+     return `${this.name} debugs ${Student.name}'s code on ${subject}`;
    }
 }
+
+//const Allison = new ProjectManager({
+ // name: 'Allison',
+ // age: 34,
+ // location: 'Seattle',
+  //specialty: 'coding',
+  //favLanguage: 'html',
+ // catchPhrase: 'youve got this!',
+ // gradClassName: 'webDev2',
+ // favInstructor: 'Brit'
+
+//});
+//console.log('task 4:', Allison.debugCode('Brad', 'html'));
 /*
   STRETCH PROBLEM (no tests!)
     - Extend the functionality of the Student by adding a prop called grade and setting it equal to a number between 1-100.
